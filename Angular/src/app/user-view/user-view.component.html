@@ -1,0 +1,24 @@
+<section>
+    <div class="container">
+        <p>In the machine has {{ machineCoins }} coins</p>
+    </div>
+    <div class="row">
+        <div class="container">
+            <div class="col-xs-4" *ngFor = "let drink of drinks">
+                <p><img src="data:image/jpg;base64,{{drink.image}}" height="100px" width="60px"> {{ drink.name }}</p>
+                <p>{{ drink.cost }} - {{ drink.amount }}</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <p>{{ sum }}</p>
+        <div>
+            <button type="button" class="btn btn-secondary" (click) = "coinDown(1)">1</button>
+            <button type="button" class="btn btn-secondary" (click) = "coinDown(2)">2</button>
+            <button type="button" class="btn btn-secondary" (click) = "coinDown(5)">5</button>
+            <button type="button" class="btn btn-secondary" (click) = "coinDown(10)">10</button>
+        </div>
+    </div>
+</section>

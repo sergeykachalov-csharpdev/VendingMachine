@@ -11,5 +11,6 @@ namespace WebAPI.Models
         public string Name { get; set; }
         public int Cost { get; set; }
         public int Amount { get; set; }
+        public byte[] Image { get; set; }
     }
 }

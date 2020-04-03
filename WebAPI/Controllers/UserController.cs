@@ -20,37 +20,28 @@ namespace WebAPI.Controllers
             _db = context;
         }
 
-        // GET: api/<controller>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("drinks")]
+        public IEnumerable<DrinkModel> GetDrinks()
         {
-            return new string[] { "value1", "value2" };
+            return _db.Drinks.Select(n => n).ToList();
         }
 
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("machines")]
+        public IEnumerable<MachineModel> GetMachines()
         {
-            return "value";
+            return _db.Machines.Select(n => n).ToList();
         }
 
-        // POST api/<controller>
-        [HttpPost]
-        public void Post()
+        [HttpPut("drinks/{id}")]
+        public void PutDrink(int id)
         {
-
+            _db.SaveChanges();
         }
 
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut("machines/{id}")]
+        public void PutMachine(int id)
         {
-        }
-
-        // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            _db.SaveChanges();
         }
     }
 }

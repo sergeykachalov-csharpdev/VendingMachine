@@ -10,5 +10,9 @@ namespace WebAPI.Models
         public int Id { get; set; }
         public int Coins { get; set; }
         public string Number { get; set; }
+        public bool OneCoin { get; set; }
+        public bool TwoCoin { get; set; }
+        public bool FiveCoin { get; set; }
+        public bool TenCoin { get; set; }
     }
 }
