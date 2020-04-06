@@ -6,16 +6,21 @@ import { AppComponent } from './app.component';
 import { UserViewComponent } from './user-view/user-view.component';
 
 import { HttpClientModule }   from '@angular/common/http';
+import { SecretKeyComponent } from './secret-key/secret-key.component';
+
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
-    UserViewComponent
+    UserViewComponent,
+    SecretKeyComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

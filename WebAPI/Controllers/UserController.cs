@@ -20,18 +20,6 @@ namespace WebAPI.Controllers
             _db = context;
         }
 
-        [HttpGet("drinks")]
-        public IEnumerable<DrinkModel> GetDrinks()
-        {
-            return _db.Drinks.Select(n => n).ToList();
-        }
-
-        [HttpGet("machines")]
-        public IEnumerable<MachineModel> GetMachines()
-        {
-            return _db.Machines.Select(n => n).ToList();
-        }
-
         [HttpPut("drinks/{id}")]
         public void PutDrink(int id)
         {

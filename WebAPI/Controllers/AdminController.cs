@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Context;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -18,22 +19,22 @@ namespace WebAPI.Controllers
             _db = context;
         }
 
-        [HttpPost("drinks")]
-        public void PostDrink()
+        [HttpPut("drinks")]
+        public async Task<ActionResult<DrinkModel>> Put(DrinkModel drink)
         {
-            _db.SaveChanges();
+            if (drink == null)
+            {
+                return BadRequest();
+            }
+            if (!_db.Drinks.Any(x => x.Id == drink.Id))
+            {
+                return NotFound();
+            }
+
+            _db.Update(drink);
+            await _db.SaveChangesAsync();
+            return Ok(drink);
         }
 
-        [HttpPut("drinks/{id}")]
-        public void PutDrink()
-        {
-            _db.SaveChanges();
-        }
-
-        [HttpPut("machines/{id}")]
-        public void PutMachine()
-        {
-            _db.SaveChanges();
-        }
     }
 }

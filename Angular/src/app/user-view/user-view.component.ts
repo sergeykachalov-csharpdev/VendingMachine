@@ -1,24 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ApiService } from '../shared/api.service';
-
-interface Machine {
-  id: number;
-  coins: number;
-  number: string;
-  oneCoin: boolean;
-  twoCoin: boolean;
-  fiveCoin: boolean;
-  tenCoin: boolean;
-}
-
-interface Drink {
-  id: number;
-  name: string;
-  cost: number;
-  amount: number;
-  image: any;
-}
+import { ApiService, Drink, Machine } from '../shared/api.service';
 
 @Component({
   selector: 'app-user-view',
@@ -35,7 +17,7 @@ export class UserViewComponent implements OnInit {
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
-    this.apiService.getDrinks().subscribe((data:Drink[]) => 
+    this.apiService.getDrinks().subscribe((data: Drink[]) => 
     {
       this.drinks = data.slice();
     });
@@ -43,7 +25,6 @@ export class UserViewComponent implements OnInit {
     this.apiService.getMachineCoins().subscribe((data: Machine[]) => 
     { 
       this.machineCoins = data[this.machineId].coins;
-
     });
   }
 
