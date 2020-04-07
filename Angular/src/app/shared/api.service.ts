@@ -12,7 +12,7 @@ export interface Machine {
 }
 
 export interface Drink {
-  id: number;
+  id?: number;
   name: string;
   cost: number;
   amount: number;
@@ -30,14 +30,34 @@ export class ApiService {
     return this.http.get('http://localhost:5000/shared/drinks');
   }
 
-  getMachineCoins() {
-    return this.http.get('http://localhost:5000/shared/machines');
-  }
-
   putDrink(drink: Drink) {
     const httpOptions = {
       headers: new HttpHeaders({'ContentType': 'application/json'})
     }
+    drink.image = <string>drink.image.replace("data:image/jpeg;base64,", "");
     return this.http.put('http://localhost:5000/admin/drinks', drink, httpOptions);
+  }
+
+  postDrink(drink: Drink) {
+    const httpOptions = {
+      headers: new HttpHeaders({'ContentType': 'application/json'})
+    }
+    drink.image = <string>drink.image.replace("data:image/jpeg;base64,", "");
+    return this.http.post('http://localhost:5000/admin/drinks', drink, httpOptions);
+  }
+
+  deleteDrink(id: number) {
+    return this.http.delete('http://localhost:5000/admin/drinks/' + id.toString());
+  }
+
+  getMachines() {
+    return this.http.get('http://localhost:5000/shared/machines');
+  }
+
+  putMachine(machine: Machine) {
+    const httpOptions = {
+      headers: new HttpHeaders({'ContentType': 'application/json'})
+    }
+    return this.http.put('http://localhost:5000/shared/machines', machine, httpOptions);
   }
 }

@@ -7,7 +7,7 @@ namespace WebAPI.Models
 {
     public class DrinkModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Name { get; set; }
         public int Cost { get; set; }
         public int Amount { get; set; }

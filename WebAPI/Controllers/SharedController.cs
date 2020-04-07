@@ -30,5 +30,22 @@ namespace WebAPI.Controllers
         {
             return _db.Machines.Select(n => n).ToList();
         }
+
+        [HttpPut("machines")]
+        public async Task<ActionResult> Put(MachineModel machine)
+        {
+            if (machine == null)
+            {
+                return BadRequest();
+            }
+            if (!_db.Machines.Any(x => x.Id == machine.Id))
+            {
+                return NotFound();
+            }
+
+            _db.Update(machine);
+            await _db.SaveChangesAsync();
+            return Ok();
+        }
     }
 }

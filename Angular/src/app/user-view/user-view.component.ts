@@ -22,7 +22,7 @@ export class UserViewComponent implements OnInit {
       this.drinks = data.slice();
     });
 
-    this.apiService.getMachineCoins().subscribe((data: Machine[]) => 
+    this.apiService.getMachines().subscribe((data: Machine[]) => 
     { 
       this.machineCoins = data[this.machineId].coins;
     });
