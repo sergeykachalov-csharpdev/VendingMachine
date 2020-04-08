@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { ApiService, Drink, Machine } from '../shared/api.service';
 
 @Component({
@@ -10,11 +9,12 @@ import { ApiService, Drink, Machine } from '../shared/api.service';
 
 export class UserViewComponent implements OnInit {
   sum: number = 0;
-  machineCoins: number = 0;
-  machineId: number = 0;
+  machine: Machine;
   drinks: Drink[];
   
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) {
+    this.machine = {id: undefined, coins: undefined, number: undefined, oneCoin: undefined, twoCoin: undefined, fiveCoin: undefined, tenCoin: undefined}
+  }
 
   ngOnInit(): void {
     this.apiService.getDrinks().subscribe((data: Drink[]) => 
@@ -24,11 +24,31 @@ export class UserViewComponent implements OnInit {
 
     this.apiService.getMachines().subscribe((data: Machine[]) => 
     { 
-      this.machineCoins = data[this.machineId].coins;
+      this.machine = data[0];
     });
   }
 
   coinDown(coin: number) {
     this.sum += coin;
+    this.machine.coins += coin;
+  }
+
+  getChange() {
+    this.machine.coins -= this.sum;
+    this.sum = 0;
+    this.apiService.putMachine(this.machine).subscribe();
+  }
+
+  buyDrink(id:number) {
+    this.drinks.forEach(element => {
+      if (element.id == id) {
+        if (this.sum >= element.cost && element.amount > 0) {
+          element.amount--;
+          this.sum -= element.cost;
+          this.apiService.putMachine(this.machine).subscribe();
+          this.apiService.putDrink(element).subscribe();
+        }
+      }
+    })
   }
 }

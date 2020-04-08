@@ -10,12 +10,14 @@ import { ViewChild } from '@angular/core';
 
 export class SecretKeyComponent implements OnInit {
   @ViewChild('chooseImg') chooseImg: ElementRef;
-   
+  @ViewChild('importJSON') importJSON: ElementRef;
+
   drinks: Drink[];
   selectedDrink: Drink;
   newDrink: Drink;
   addItem: boolean = false;
   machine: Machine;
+  importData: any[];
 
   constructor(private apiService: ApiService) { 
     this.selectedDrink = {id: undefined, name: undefined, cost: undefined, amount: undefined, image: undefined};
@@ -25,23 +27,21 @@ export class SecretKeyComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadDrinks();
-    this.loadMachineCoins();
+    this.loadMachine();
   }
 
-  loadMachineCoins() {
-    this.apiService.getMachines().subscribe((data: Machine[]) => 
-    { 
+  loadMachine() {
+    this.apiService.getMachines().subscribe((data: Machine[]) => { 
       this.machine = data[0];
     });
   }
 
-  machineCoinsSave() {
+  machineSave() {
     this.apiService.putMachine(this.machine).subscribe();
   }
 
   loadDrinks() {
-    this.apiService.getDrinks().subscribe((data: Drink[]) => 
-    {
+    this.apiService.getDrinks().subscribe((data: Drink[]) => {
       this.drinks = data.slice();
       this.drinks.map(x => x.image = "data:image/jpeg;base64," + x.image);
       this.selectedDrink.id = this.drinks[0].id;
@@ -94,18 +94,38 @@ export class SecretKeyComponent implements OnInit {
   }
 
   handleFileInput(files: FileList, type: string) {
-    this.getBase64(files.item(0), (e) => {
-      if (type == "update") {
-        this.selectedDrink.image = e.target.result;
-      } else {
-        this.newDrink.image = e.target.result;
-      }
-    });    
+    if(type == "import") {
+      this.getJSON(files.item(0), (e) => {
+        this.importJSON.nativeElement.value = "";
+        this.importData = JSON.parse(e.target.result);
+        this.importData.forEach(element => {
+          this.apiService.postDrink({id: element.id, 
+                                    name: element.name, 
+                                    cost: element.cost, 
+                                    amount: element.amount, 
+                                    image: element.image}).subscribe(() => this.loadDrinks());
+        })
+      })
+    } else {
+      this.getBase64(files.item(0), (e) => {
+        if (type == "update") {
+          this.selectedDrink.image = e.target.result;
+        } else if (type == "add") {
+          this.newDrink.image = e.target.result;
+        }
+      });
+    }
   }
 
   getBase64(file, onLoadCallback) {
     const reader = new FileReader();
     reader.onload = onLoadCallback;
     reader.readAsDataURL(file);
+  }
+
+  getJSON(file, onLoadCallback) {
+    const reader = new FileReader();
+    reader.onload = onLoadCallback;
+    reader.readAsText(file, "UTF-8");
   }
 }

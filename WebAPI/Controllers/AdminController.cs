@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("drinks")]
-        public async Task<ActionResult> Put(DrinkModel drink)
+        public async Task<ActionResult> PutDrink(DrinkModel drink)
         {
             if (drink == null)
             {
@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("drinks")]
-        public async Task<ActionResult> Post(DrinkModel drink)
+        public async Task<ActionResult> PostDrink(DrinkModel drink)
         {
             if (drink == null)
             {
@@ -50,7 +50,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("drinks/{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> DeleteDrink(int id)
         {
             DrinkModel drink = _db.Drinks.FirstOrDefault(x => x.Id == id);
             if (drink == null)
@@ -58,6 +58,23 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
             _db.Remove(drink);
+            await _db.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPut("machines")]
+        public async Task<ActionResult> PutMachine(MachineModel machine)
+        {
+            if (machine == null)
+            {
+                return BadRequest();
+            }
+            if (!_db.Machines.Any(x => x.Id == machine.Id))
+            {
+                return NotFound();
+            }
+
+            _db.Update(machine);
             await _db.SaveChangesAsync();
             return Ok();
         }

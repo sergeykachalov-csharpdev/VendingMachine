@@ -1,24 +1,26 @@
 <section>
-    <div class="container">
-        <p>In the machine has {{ machineCoins }} coins</p>
+    <div class="container text-center machine-coins">
+        <p>In the machine has {{machine.coins}} coins</p>
     </div>
-    <div class="row">
-        <div class="container">
-            <div class="col-xs-4" *ngFor = "let drink of drinks">
-                <p><img src="data:image/jpg;base64,{{drink.image}}" height="100px" width="60px"> {{ drink.name }}</p>
-                <p>{{ drink.cost }} - {{ drink.amount }}</p>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 text-center" *ngFor = "let drink of drinks">
+                <p class="name"><strong>{{ drink.name }}</strong></p>
+                <p><img src="data:image/jpg;base64,{{drink.image}}" (click)="buyDrink(drink.id)" height="100px" width="60px"></p>
+                <p class="cost-amount">Cost: {{ drink.cost }} Amount: {{ drink.amount }}</p>
             </div>
         </div>
     </div>
-
-
+ 
     <div class="container">
-        <p>{{ sum }}</p>
-        <div>
-            <button type="button" class="btn btn-secondary" (click) = "coinDown(1)">1</button>
-            <button type="button" class="btn btn-secondary" (click) = "coinDown(2)">2</button>
-            <button type="button" class="btn btn-secondary" (click) = "coinDown(5)">5</button>
-            <button type="button" class="btn btn-secondary" (click) = "coinDown(10)">10</button>
+        <div class="text-center">
+            <p class="sum">{{ sum }}</p>
+            <button type="button" class="btn btn-secondary" (click)="coinDown(1)" [disabled]="!machine.oneCoin">1</button>
+            <button type="button" class="btn btn-secondary" (click)="coinDown(2)" [disabled]="!machine.twoCoin">2</button>
+            <button type="button" class="btn btn-secondary" (click)="coinDown(5)" [disabled]="!machine.fiveCoin">5</button>
+            <button type="button" class="btn btn-secondary" (click)="coinDown(10)" [disabled]="!machine.tenCoin">10</button>
+            <button type="button" class="btn btn-success" (click)="getChange()">Get change >></button> 
         </div>
     </div>
 </section>
